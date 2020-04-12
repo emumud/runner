@@ -1,0 +1,27 @@
+{
+  "name": "runner",
+  "version": "1.0.0",
+  "description": "Emumud's runner which runs transpiled scripts.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emumud/runner.git"
+  },
+  "keywords": [
+    "emumud",
+    "hackmud"
+  ],
+  "author": "Duck Industries",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/emumud/runner/issues"
+  },
+  "homepage": "https://github.com/emumud/runner#readme",
+  "dependencies": {
+    "scripts": "github:emumud/scripts#master",
+    "transpiler": "github:emumud/transpiler#master"
+  }
+}
