@@ -115,6 +115,10 @@ function shutdown() {
   process.exit();
 }
 
+function changeUser(newUser) {
+  global.user = newUser;
+}
+
 module.exports = {
   runScriptName,
   runScript,
@@ -128,6 +132,7 @@ module.exports = {
 
   native: {
     clear,
-    shutdown
+    shutdown,
+    changeUser
   }
 };
