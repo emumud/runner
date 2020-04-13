@@ -68,7 +68,7 @@ function runScript(content, scriptName, context, args) {
   global.running_args = args;
 
   if (!content.includes('transpiled with emumud transpiler')) {
-    content = transpiler.transpileScript(content);
+    content = transpiler.transpileScript(content).transpiled;
   }
 
   try {
