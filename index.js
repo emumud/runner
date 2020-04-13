@@ -42,8 +42,8 @@ function runScriptFile(filepath, scriptName, context, args) {
 }
 
 function runScript(content, scriptName, context, args) {
-  context = context === undefined || generateContext(scriptName); // not given context at all
-  context = typeof context === 'string' || generateContext(scriptName, context); // given user as context
+  context = context === undefined ? generateContext(scriptName) : context; // not given context at all
+  context = typeof context === 'string' ? generateContext(scriptName, context) : context; // given user as context
 
   const sandbox = {
     emumudInternals: {
