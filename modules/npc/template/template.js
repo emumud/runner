@@ -96,7 +96,7 @@ function unlock(gc, upgrades) {
 }
 
 function (context, args) {
-  const locks = TEMPLATE_LOCKS;
+  const locks = TEMPLATE_LOCKS; // These are to be replaced by the NPC generator as this is a template
   const solutions = TEMPLATE_SOLUTIONS;
   const gc = TEMPLATE_GC;
   const upgrades = TEMPLATE_UPGRADES;
