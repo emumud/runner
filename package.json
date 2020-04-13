@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/emumud/runner#readme",
   "dependencies": {
+    "logging": "github:emumud/logging",
     "scripts": "github:emumud/scripts#master",
     "transpiler": "github:emumud/transpiler#master"
   }

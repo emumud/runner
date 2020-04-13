@@ -1,9 +1,27 @@
 const vm = require('vm');
+
+// runner internal modules
+const hardline = require('./modules/hardline.js');
+const chat = require('./modules/chat.js');
+const npc = require('./modules/npc/npc.js');
+
+// emumud modules
+const logging = require('logging');
 const transpiler = require('transpiler');
 
-let scripts = require('scripts').loadScripts();
+global.scripts = require('scripts').loadScripts();
 
-function generateContext(user = 'default') {
+global.transpiler = transpiler;
+global.hardline = hardline;
+global.chat = chat;
+global.logging = logging;
+global.runner = module.exports;
+
+global.user = 'default';
+global.users = [];
+global.mode = 'hackmud';
+
+function generateContext(script, user = 'default') {
   return {
     'caller': user,
     'calling_script': null,
@@ -14,24 +32,30 @@ function generateContext(user = 'default') {
 }
 
 function runScriptName(name, context, args) {
-  return runScript(scripts[name].transpiled, context, args);
+  return runScript(global.scripts[name].transpiled, context, args);
 }
 
-function runScript(content, context, args) {
-  if (scripts === undefined) {
-    scripts = require('scripts').loadScripts();
-  }
+function runScriptFile(filepath, scriptName, context, args) {
+  const origContent = fs.readFileSync(filepath);
+  
+  return runScript(origContent, scriptName, context, args);  
+}
 
-  context = context === undefined || generateContext(); // not given context at all
-  context = typeof context === 'string' || generateContext(context); // given user as context
+function runScript(content, scriptName, context, args) {
+  context = context === undefined || generateContext(scriptName); // not given context at all
+  context = typeof context === 'string' || generateContext(scriptName, context); // given user as context
 
   const sandbox = {
-    //hardline: hardline,
-    //npc: npc,
-    //chat: chat,
-    //logging: logging,
-    //main: main,
-    transpiler: module.exports,
+    emumudInternals: {
+      transpiler,
+      runner: module.exports,
+
+      logging,
+      
+      chat,
+      npc,
+      hardline
+    },
   
     emumud_args: args,
     emumud_context: context,
@@ -51,7 +75,7 @@ function runScript(content, context, args) {
     return vm.runInNewContext(content, sandbox, { timeout: 5000, contextCodeGeneration: { strings: false, wasm: false } });
   } catch (err) {
     if (err.code === 'ERR_SCRIPT_EXECUTION_TIMEOUT') {
-      return ':::TRUST COMMUNICATION::: The script ran for more than 5000 milliseconds and was terminated.';
+      return [false, ':::TRUST COMMUNICATION::: The script ran for more than 5000 milliseconds and was terminated.'];
     }
 
     return [false, err];
@@ -74,11 +98,11 @@ function scriptor(script, args) {
 }
 
 function addScript(scriptName, scriptInfo) {
-  scripts[scriptName] = scriptInfo;
+  global.scripts[scriptName] = scriptInfo;
 }
 
 function removeScript(scriptName) {
-  delete scripts[scriptName];
+  delete global.scripts[scriptName];
 }
 
 function clear() {
@@ -94,11 +118,13 @@ function shutdown() {
 module.exports = {
   runScriptName,
   runScript,
+  runScriptFile,
 
   scriptor,
   generateContext,
 
   addScript,
+  removeScript,
 
   native: {
     clear,
