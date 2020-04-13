@@ -32,7 +32,7 @@ function generateContext(script, user = 'default') {
 }
 
 function runScriptName(name, context, args) {
-  return runScript(global.scripts[name].transpiled, context, args);
+  return runScript(global.scripts[name].transpiled, name, context, args);
 }
 
 function runScriptFile(filepath, scriptName, context, args) {
