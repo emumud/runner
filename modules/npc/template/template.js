@@ -101,7 +101,7 @@ function (context, args) {
   const gc = TEMPLATE_GC;
   const upgrades = TEMPLATE_UPGRADES;
 
-  if (hardline.status() === false) {
+  if (emumudInternals.hardline.status() === false) {
     return ':::TRUST COMMUNICATION::: hardline required - activate with kernel.hardline';
   }
 
