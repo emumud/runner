@@ -134,8 +134,8 @@ function channelsScript(user) {
       continue;
     }
 
-    if (c.users.includes(user)) {
-      out.push(c.name);
+    if (channels[c].users.includes(user)) {
+      out.push(channels[c].name);
     }
   }
 
