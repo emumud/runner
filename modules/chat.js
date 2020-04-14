@@ -127,19 +127,7 @@ function users(channel, user) {
 }
 
 function channelsScript(user) {
-  const out = [];
-
-  for (const c in channels) {
-    if (!Object.prototype.hasOwnProperty.call(channels, c)) {
-      continue;
-    }
-
-    if (channels[c].users.includes(user)) {
-      out.push(channels[c].name);
-    }
-  }
-
-  return out;
+  return Object.values(channels).filter((c) => c.users.includes(user)).map((c) => c.name);
 }
 
 function tell(to, msg, user) {
